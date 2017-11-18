@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>reveal.js</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/queue.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <section>
+            <p class="fragment fade-out" data-fragment-index="1">The joy and wonders of:</p>
+
+            <h1>Queueing</h1>
+
+            <span class="smaller fragment" data-fragment-index="1">(an intro)</span>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    notes
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Goals?</h2>
+
+            <ul>
+                <li>Introduce you to Queueing</li>
+                <li>Talk about some use cases</li>
+                <li>Discuss real world examples</li>
+            </ul>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                notes
+                </script>
+            </aside>
+        </section>
+
+        <section>
+        <h2>What is Queueing?</h2>
+
+        <p>The process of putting <span class="fragment highlight">things</span> in a <span class="fragment highlight">first in first out</span> process.</p>
+        <p class="fragment">Then addressing each of those things in that order.</p>
+        <p class="fragment">Pretty simple, right?</p>
+
+        <aside class="notes" data-markdown>
+            <script type="text/template">
+            notes
+            </script>
+        </aside>
+    </section>
+
+        <section>
+            <h2>Physical World Queueing</h2>
+
+            <p class="fragment">Waiting in a checkout line.</p>
+            <p class="fragment">Waiting on hold for Comcast.</p>
+            <p class="fragment">Waiting to pee at a concert.</p>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * you use queues in the physical world all the time
+                    * waiting in a checkout line, provided there are no cutters
+                    * waiting on hold at any call center
+                    * waiting in line for a porta-john at your latest luke bryan concert
+                </script>
+            </aside>
+        </section>
+
+        <section>
+
+            <h2>Queueing in code</h2>
+
+            <p>Most languages have a queue data structure</p>
+            <p>If not - implementing one is dead simple</p>
+            <p>Can be useful when it helps simplify logic</p>
+            <p class="fragment highlight">That's not what we're talking about today</p>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * we also have that same concept in most languages as well
+                    * c# has a queue and it can be really useful for certain use cases
+                    * if not, creating one is just using an array to always take the first element
+                    * but we're not talking about those data structures today
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Queueing via Tool/Product</h2>
+
+            <ul>
+                <li>Similar to the difference in storing data in memory vs database</li>
+                <li>The environment now can know about the queue(s)</li>
+                <li>You can start to do some powerful stuff</li>
+            </ul>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                * the difference between using a queue in code (via data structure) and a product is kind of
+                    like the difference between storing data in an array vs a database
+                * once it is out of the process memory, the entire environment can see it
+                * and you can now share that data and start doing some simple, yet powerful stuff
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>What Kind of Powerful Stuff?</h2>
+        </section>
+
+        <section>
+            <h2>Competing Consumer</h2>
+            <img src="img/competing-consumer.png" />
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * I will talk about a few use cases here, but one important concept in these is the competing consumer
+                    * discuss ...
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Inter-Process Communication</h2>
+
+            <ul>
+                <li>Decoupling an environment becomes easier</li>
+                <li>You can stand up job-specific servers/services</li>
+                <li>Fire and forget logic is possible</li>
+            </ul>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * micro services are really popular right now - break a large system down into
+                    very small components
+                    * in order to do that you have to be able to communicate between them all
+                    * one way is for each component to do its job then fire and forget a message instructing
+                    the next component to do its job
+                    * the first component doesn't know or care where it goes
+                </script>
+            </aside>
+        </section>
+
+
+        <section>
+            <h2>Redundancy / Resiliency</h2>
+
+            <ul>
+                <li>A cluster of servers can process messages</li>
+                <li>If one goes down the others will still process</li>
+                <li>If all go down, the messages will pile up and wait to be handled ... but not lost</li>
+            </ul>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * now imagine one of those components is really important - like update the balance of a bank account
+                    * you can have a bunch of servers running, waiting to get a message
+                    * IMPORTANT: only one of those servers will get the message
+                    * As long as there is one server in the mix, messages will get processed
+                    * And if none - messages will wait to get processed.  Not get lost.
+                </script>
+            </aside>
+        </section>
+
+
+        <section>
+            <h2>Large Processing Jobs</h2>
+
+            <ul>
+                <li>Create server(s) specific for the job at hand</li>
+                <li>Easy to scale those servers up and down</li>
+                <li>Easy to scale on a schedule when the load is predictable</li>
+            </ul>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * could be image processing
+                    * large scale data processing
+                    * web scraping
+                    * someone asks the web server to process a bunch of stuff
+                    * the web server drops 1 or more messages into the queue
+                    * the batch processing system picks them up and do their thing
+                    * easy to add more machines to the batch process job
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Async</h2>
+
+            <ul>
+                <li>Some languages don't handle threading well</li>
+                <li class="fragment highlight">PHP</li>
+            </ul>
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    notes
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Real Uses</h2>
+        </section>
+
+        <section>
+            <h2>TrackAbout Mobile Sync</h2>
+            <img src="img/ta-sync.png" />
+        </section>
+
+        <section>
+            <h2>Logging</h2>
+            <img src="img/logging.png" />
+
+            <aside class="notes" data-markdown>
+                <script type="text/template">
+                    * especially when no filesystem is present
+                </script>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Imagine Careers - Job Parsing</h2>
+            <p>Demo</p>
+        </section>
+
+        <section>
+            <h2>RabbitMQ Queueing Patterns</h2>
+            <img src="img/rabbit-queue-types.png" />
+        </section>
+
+        <section>
+            <h2>Ok, that's enough</h2>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            {src: 'plugin/markdown/marked.js'},
+            {src: 'plugin/markdown/markdown.js'},
+            {src: 'plugin/notes/notes.js', async: true},
+            {
+                src: 'plugin/highlight/highlight.js', async: true, callback: function () {
+                hljs.initHighlightingOnLoad();
+            }
+            }
+        ]
+    });
+
+    Reveal.configure({
+        //autoSlide: 1500
+    });
+</script>
+
+<script>
+    Reveal.addEventListener('ready', function (event) {
+        // event.currentSlide, event.indexh, event.indexv
+        //alert('hey now');
+    });
+</script>
+</body>
+</html>
